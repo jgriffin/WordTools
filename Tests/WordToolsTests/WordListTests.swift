@@ -6,12 +6,12 @@ final class WordListTests: XCTestCase {
         let wordlist = WordList.standard
         XCTAssertEqual(wordlist.count, 69904)
     }
-    
+
     func testWordlistStartingWithA() {
         let wordlist = WordList.standard
         let startsWithA = wordlist
-            .filter { $0.starts(with: "a")}
-            
+            .filter { $0.starts(with: "a") }
+
         XCTAssertEqual(startsWithA.count, 5583)
     }
 }

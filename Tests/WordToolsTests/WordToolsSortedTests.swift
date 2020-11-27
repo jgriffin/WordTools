@@ -60,4 +60,28 @@ final class WordListSotedTests: XCTestCase {
                            "\(test.test),\(test.other)")
         }
     }
+
+    func testSortedDiff() {
+        let tests: [(test: String, other: String, check: (leftOnly: String, rightOnly: String))] = [
+            ("", "", ("", "")),
+            ("", "a", ("", "a")),
+            ("a", "a", ("", "")),
+            ("a", "ab", ("", "b")),
+            ("a", "aa", ("", "a")),
+            ("b", "a", ("b", "a")),
+            ("ab", "a", ("b", "")),
+            ("ab", "aab", ("", "a")),
+            ("aab", "ab", ("a", "")),
+        ]
+
+        tests.forEach { test in
+            let result = test.test.sortedDiff(test.other)
+            XCTAssertTrue(result.leftOnly == test.check.leftOnly && result.rightOnly == test.check.rightOnly,
+                          "\(test.test),\(test.other)")
+
+            let reverseResult = test.other.sortedDiff(test.test)
+            XCTAssertTrue(reverseResult.leftOnly == test.check.rightOnly && reverseResult.rightOnly == test.check.leftOnly,
+                          "\(test.other),\(test.test)")
+        }
+    }
 }

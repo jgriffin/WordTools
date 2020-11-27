@@ -23,7 +23,7 @@ let package = Package(
             name: "WordTools",
             dependencies: [],
             resources: [
-                .process("resources")
+                .process("resources"),
             ]
         ),
         .testTarget(

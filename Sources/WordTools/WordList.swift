@@ -1,19 +1,26 @@
 import Foundation
 
-public struct WordList {
-    private static let wordlistURL = Bundle.module.url(forResource: "wordlist", withExtension: "txt")
+public enum WordList: String {
+    case wordlist = "wordlist.txt"
+    case unix_words = "unix_words.txt"
+    case unix_propernames = "unix_propernames.txt"
+    case anEnglishWordList = "AnEnglishWordList.txt"
+    case top12ThousantProbable = "Top12Thousand-probable-v2.txt"
 
-    public static let standard: [Substring] = {
-        guard let url = wordlistURL,
-              let contents = try? String(contentsOf: url, encoding: .utf8)
+    var url: URL? {
+        Bundle.module.url(forResource: rawValue, withExtension: nil)
+    }
+}
+
+extension WordList {
+    public func readWords() -> [Substring] {
+        guard let url = url,
+            let contents = try? String(contentsOf: url, encoding: .utf8)
         else {
             return []
         }
 
         return contents
             .split(separator: "\n")
-    }()
-    
-    
-    public static let standardLettersSorted: [String] = standard.map { $0.sortLetters() }
+    }
 }
