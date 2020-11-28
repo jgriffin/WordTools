@@ -75,11 +75,14 @@ extension WordAndSorted {
             rightOnly.append(o)
         }
 
-        return (leftOnly: leftOnly, rightOnly: rightOnly)
+        return WordAndSortedDiff(leftOnly: leftOnly, rightOnly: rightOnly)
     }
 }
 
-public typealias WordAndSortedDiff = (leftOnly: [Character], rightOnly: [Character])
+public struct WordAndSortedDiff: Equatable {
+    public let leftOnly: [Character]
+    public let rightOnly: [Character]
+}
 
 extension StringProtocol {
     public func wordAndSorted() -> WordAndSorted<Self> {
