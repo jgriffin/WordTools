@@ -14,11 +14,13 @@ let package = Package(
             name: "Cryptograms",
             targets: ["Cryptograms"]
         ),
-
+        .library(
+            name: "WordSearch",
+            targets: ["WordSearch"]
+        ),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
+        .package(url: "https://github.com/apple/swift-algorithms.git", from: "0.0.2"),
     ],
     targets: [
         .target(
@@ -39,6 +41,17 @@ let package = Package(
         .testTarget(
             name: "CryptogramsTests",
             dependencies: ["Cryptograms"]
+        ),
+        .target(
+            name: "WordSearch",
+            dependencies: [
+                "WordTools",
+                .product(name: "Algorithms", package: "swift-algorithms"),
+            ]
+        ),
+        .testTarget(
+            name: "WordSearchTests",
+            dependencies: ["WordSearch"]
         ),
     ]
 )

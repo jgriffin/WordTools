@@ -4,7 +4,7 @@ import XCTest
 final class WordListTests: XCTestCase {
     func testReadWorldlist() {
         let wordlist = WordList.wordlist.readWords()
-        XCTAssertEqual(wordlist.count, 69904)
+        XCTAssertEqual(wordlist.count, 69903)
     }
 
     func testWordlistStartingWithA() {
