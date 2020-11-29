@@ -33,9 +33,20 @@ public struct BoardPosition: Hashable, CustomStringConvertible {
     // MARK: Iterator
 
     public typealias Step = BoardPosition
+    // simple
     static let right = Step(1, 0)
     static let down = Step(0, 1)
     static let downRight = Step(1, 1)
+    static let simpleSteps: [Step] = [.right, .down, .downRight]
+    // advanced
+    static let left = Step(-1, 0)
+    static let up = Step(0, -1)
+    static let downLeft = Step(-1, 1)
+    static let upRight = Step(1, -1)
+    static let upLeft = Step(-1, -1)
+    static let advancedSteps: [Step] = [.left, .up, .downLeft, .upRight, .upLeft]
+
+    // all
 
     func makeIterator(_ step: Step, size: BoardPosition) -> AnyIterator<BoardPosition> {
         var cur = self
@@ -45,4 +56,9 @@ public struct BoardPosition: Hashable, CustomStringConvertible {
             return cur
         }
     }
+}
+
+extension Array where Element == BoardPosition.Step {
+    public static let simpleSteps = BoardPosition.simpleSteps
+    public static let allSteps = BoardPosition.simpleSteps + BoardPosition.advancedSteps
 }

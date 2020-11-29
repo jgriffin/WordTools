@@ -1,12 +1,6 @@
-//
-//  File.swift
-//
-//
-//  Created by Griff on 11/28/20.
-//
-
 import Foundation
 import WordSearch
+import WordTools
 import XCTest
 
 final class WordSearchTests: XCTestCase {
@@ -32,5 +26,22 @@ final class WordSearchTests: XCTestCase {
 
             XCTAssertEqual(result, test.check, test.word)
         }
+    }
+
+    func testBoardPretty() {
+        print(board.pretty())
+    }
+
+    func testBoardOnlyPositions() {
+        let search = WordSearch(board: board)
+        let applePositions = search.findWord("apple").flatMap { $0 }.set
+
+        print(board.pretty(show: applePositions), "\n")
+        print(board.pretty(show: board.positionsOf("apple")), "\n")
+
+        print(board.pretty(show: board.positionsOf("apple"),
+                           showBlock: { ch in CharacterMap.uppercasing[ch].flatMap { $0 } ?? ch },
+                           hideBlock: { ch in CharacterMap.lowercasing[ch].flatMap { $0 } ?? ch }),
+              "\n")
     }
 }

@@ -20,14 +20,18 @@ public struct Board<Piece: Hashable> {
         _positionsOf = Self.calculatePositionsOf(pieces)
     }
 
-    public subscript(index: Pos) -> Piece {
-        squares[index.y][index.x]
-    }
+    public subscript(index: Pos) -> Piece { pieceAt(index) }
+
+    public func pieceAt(_ pos: Pos) -> Piece { squares[pos.y][pos.x] }
 
     public func isValid(_ pos: Pos) -> Bool { pos.isValid(in: size) }
 
     public func positionsOf(_ piece: Piece) -> [Pos] {
         _positionsOf[piece] ?? []
+    }
+
+    public func positionsOf<C: Collection>(_ pieces: C) -> [Pos] where C.Element == Piece {
+        pieces.uniqued().flatMap { p in _positionsOf[p, default: []] }
     }
 
     public func positionsFrom(_ pos: Pos, step: BoardPosition.Step) -> AnyIterator<Pos> {

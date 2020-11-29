@@ -1,4 +1,4 @@
-extension Cryptogram {
+public struct Cryptogram {
     public static func analyze(_ text: [Character], top: Int = 10) -> String {
         let alphaNums = Set(Character.allAlphaNumeric)
         let text = text.filter { alphaNums.contains($0) }

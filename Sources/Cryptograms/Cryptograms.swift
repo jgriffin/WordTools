@@ -1,14 +1,5 @@
-//
-//  Cryptograms.swift
-//
-//
-//  Created by Griff on 11/27/20.
-//
-
 import Foundation
 import WordTools
-
-public struct Cryptogram {}
 
 public struct CryptogramPuzzle {
     public var text: [Character]
@@ -43,11 +34,9 @@ public struct CryptogramPuzzle {
 }
 
 extension CryptogramPuzzle {
-    public init(text: [Character]) {
-        self.text = text
-    }
-
-    public init(text: String) {
-        self.text = Array(text)
+    public init<C: Collection>(text: C)
+        where C.Element == Character
+    {
+        self.text = text.array
     }
 }
