@@ -60,7 +60,7 @@ final class BoardAndPositionTests: XCTestCase {
         }
     }
 
-    func testMakeIterator() {
+    func testPiecesFrom() {
         let board = boardAbcd
 
         let tests: [(start: Pos,
@@ -74,11 +74,11 @@ final class BoardAndPositionTests: XCTestCase {
 
         tests.forEach { test in
 
-            XCTAssertEqual(board.makeIterator(from: test.start, step: .right).map { board[$0] },
+            XCTAssertEqual(board.piecesFrom(test.start, step: .right).array,
                            test.checkRight.array)
-            XCTAssertEqual(board.makeIterator(from: test.start, step: .down).map { board[$0] },
+            XCTAssertEqual(board.piecesFrom(test.start, step: .down).array,
                            test.checkDown.array)
-            XCTAssertEqual(board.makeIterator(from: test.start, step: .downRight).map { board[$0] },
+            XCTAssertEqual(board.piecesFrom(test.start, step: .downRight).array,
                            test.checkDiagonal.array)
         }
     }

@@ -1,10 +1,3 @@
-//
-//  File.swift
-//
-//
-//  Created by Griff on 11/28/20.
-//
-
 import Foundation
 
 extension Sequence where Element: Hashable {
