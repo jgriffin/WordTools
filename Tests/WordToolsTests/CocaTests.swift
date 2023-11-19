@@ -25,7 +25,7 @@ final class CocaTests: XCTestCase {
     }
 
     func testAlphaCounts() async throws {
-        let result = try WordList.coca_acad.data.asArray
+        let result = try WordList.coca_acad.data.asAscii
         try print(result.asString.prefix(200))
 
         let counts = LetterCounts(result)

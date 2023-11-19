@@ -15,4 +15,12 @@ final class WordListTests: XCTestCase {
 
         XCTAssertEqual(startsWithA.count, 5583)
     }
+    
+    func testLetterCounts() throws {
+        let words = try WordList.wordlist.data.asAscii
+        let counts = LetterCounts(words)
+
+        print(counts)
+    }
+
 }

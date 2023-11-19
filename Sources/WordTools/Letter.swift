@@ -33,7 +33,7 @@ public extension Set where Element: Letter {
     static var isAscii: Self { Element.asciiLetters.asSet }
     static var isUppercase: Self { Element.uppercaseLetters.asSet }
     static var isLowercase: Self { Element.lowercaseLetters.asSet }
-    static var isAalpha: Self { Element.alphaLetters.asSet }
+    static var isAlpha: Self { Element.alphaLetters.asSet }
     static var isNumeric: Self { Element.numericLetters.asSet }
     static var isAlphaNumeric: Self { Element.alphaNumericLetters.asSet }
 }
@@ -82,7 +82,7 @@ public typealias Ascii = UInt8
 extension Ascii: Letter {}
 
 public extension Ascii {
-    static var asciiLetters: [Ascii] = (32 ... 126).asArray
+    static var asciiLetters: [Ascii] = [10] + (32 ... 126).asArray
     static let newline: Ascii = Character.newline.asciiValue!
     static let space: Ascii = Character.space.asciiValue!
     static let tilde: Ascii = Character.tilde.asciiValue!
@@ -96,9 +96,12 @@ public extension Ascii {
     static let symbolLetters: [Ascii] = try! Character.symbolLetters.asAscii
 
     var asCharacter: Character { Character(UnicodeScalar(self)) }
+
+    var isAscii: Bool { Ascii.isAscii.contains(self) }
+    static let isAscii: Set<Ascii> = .isAscii
 }
 
-public extension [Ascii] {
+public extension Sequence<Ascii> {
     var asString: String {
         get throws {
             guard let string = String(bytes: self, encoding: .ascii) else { throw AsciiError.stringConversionFailed }
@@ -118,6 +121,25 @@ public extension Sequence<Character> {
                 guard let ascii = $0.asciiValue else { throw AsciiError.notAscii }
                 return ascii
             }
+        }
+    }
+}
+
+public extension Set<Ascii> {
+    static let isAscii: Self = Element.asciiLetters.asSet
+}
+
+public extension Data {
+    var asAscii: [Ascii] {
+        get throws {
+            let ascii = Array(self)
+            for (i,ch) in ascii.enumerated() {
+                if !ch.isAscii {
+                    print(i, ch, try! ascii.dropFirst(i-1).prefix(50).asString)
+                    throw AsciiError.notAscii
+                }
+            }
+            return ascii
         }
     }
 }
