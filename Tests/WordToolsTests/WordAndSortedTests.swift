@@ -45,14 +45,18 @@ final class WordListSortedTests: XCTestCase {
             let testWas = test.test.wordAndSorted()
 
             let result = testWas.diffSorted(Array(test.other))
-            let check = WordAndSortedDiff(leftOnly: Array(test.check.leftOnly),
-                                          rightOnly: Array(test.check.rightOnly))
+            let check = WordAndSorted<String>.Diff(
+                leftOnly: Array(test.check.leftOnly),
+                rightOnly: Array(test.check.rightOnly)
+            )
             XCTAssertEqual(result, check, "\(test.test),\(test.other)")
 
             let otherWas = test.other.wordAndSorted()
             let reverseResult = otherWas.diffSorted(Array(test.test))
-            let reverseCheck = WordAndSortedDiff(leftOnly: Array(test.check.rightOnly),
-                                                 rightOnly: Array(test.check.leftOnly))
+            let reverseCheck = WordAndSorted<String>.Diff(
+                leftOnly: Array(test.check.rightOnly),
+                rightOnly: Array(test.check.leftOnly)
+            )
 
             XCTAssertEqual(reverseResult, reverseCheck, "\(test.other),\(test.test)")
         }

@@ -13,7 +13,7 @@ public struct CryptogramPuzzle {
     }
 
     public mutating func substitute(_ addSubs: [Character: Character]) {
-        substitutions.merge(addSubs) { (_, new) -> Character in
+        substitutions.merge(addSubs) { _, new -> Character in
             new
         }
     }
@@ -23,20 +23,18 @@ public struct CryptogramPuzzle {
             .reduce(into: [Character: Character]()) { result, pair in
                 result[pair.0] = pair.1
             }
-        substitutions.merge(subs) { (_, new) -> Character in
+        substitutions.merge(subs) { _, new -> Character in
             new
         }
     }
 
     public mutating func substitute(_ chars: String, _ with: String) {
-        substitute(chars.characters, with.characters)
+        substitute(chars.asCharacters, with.asCharacters)
     }
 }
 
-extension CryptogramPuzzle {
-    public init<C: Collection>(text: C)
-        where C.Element == Character
-    {
-        self.text = text.array
+public extension CryptogramPuzzle {
+    init(text: some Collection<Character>) {
+        self.text = text.asArray
     }
 }

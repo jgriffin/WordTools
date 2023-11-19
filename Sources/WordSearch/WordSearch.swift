@@ -6,9 +6,8 @@ public struct WordSearch {
 
     public init(board: Board<Character>) { self.board = board }
 
-    public func findWord<C: Collection>(_ characters: C,
-                                        directions: [BoardPosition.Step] = .allSteps) -> [[BoardPosition]]
-        where C.Element == Character
+    public func findWord(_ characters: some Collection<Character>,
+                         directions: [BoardPosition.Step] = .allSteps) -> [[BoardPosition]]
     {
         guard let firstCh = characters.first else { return [] }
 
@@ -35,10 +34,10 @@ public struct WordSearch {
             }
     }
 
-    public func findWords<WC: Collection, C: Collection>(_ words: WC)
+    public func findWords<C: Collection>(_ words: some Collection<C>)
         -> (found: [(word: C, positions: [BoardPosition])],
             notFound: [C])
-        where WC.Element == C, C.Element == Character
+        where C.Element == Character
     {
         var found = [(C, [BoardPosition])]()
         var notFound = [C]()
@@ -46,7 +45,8 @@ public struct WordSearch {
         words.forEach { word in
             let positions = findWord(word)
 
-            guard let first = positions.first else {
+            guard let first = positions.first
+            else {
                 notFound.append(word)
                 return
             }
@@ -57,22 +57,19 @@ public struct WordSearch {
         return (found, notFound)
     }
 
-    public func prettyFindWord<C: Collection>(_ word: C) -> String
-        where C.Element == Character
-    {
+    public func prettyFindWord(_ word: some Collection<Character>) -> String {
         let positions = findWord(word)
+        let lowercasing = Character.toLowercaseMap
 
         let prettyBoard = !positions.isEmpty ?
             board.pretty(show: positions.joined()) :
             board.pretty(show: board.positionsOf(word),
-                         showMap: { ch in CharacterMap.lowercasing[ch].flatMap { $0 } ?? ch })
+                         showMap: { ch in lowercasing[ch] ?? ch })
 
         return String(word) + "\n" + prettyBoard + "\n"
     }
 
-    public func prettyFindWords<WC: Collection, C: Collection>(_ words: WC) -> String
-        where WC.Element == C, C.Element == Character
-    {
+    public func prettyFindWords(_ words: some Collection<some Collection<Character>>) -> String {
         let (found, notFound) = findWords(words)
 
         var output = found.map { String($0.word) }.joined(separator: ", ") + "\n"

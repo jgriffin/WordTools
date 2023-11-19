@@ -1,9 +1,9 @@
-public struct Cryptogram {
+public enum Cryptogram {
     public static func analyze(_ text: [Character], top: Int = 10) -> String {
-        let alphaNums = Set(Character.allAlphaNumeric)
+        let alphaNums = Character.alphaNumericLetters
         let text = text.filter { alphaNums.contains($0) }
 
-        var output: String = ""
+        var output = ""
 
         output += "text:  character - frequency - count\n"
         output += Self.characterFrequencies(text)
@@ -21,7 +21,7 @@ public struct Cryptogram {
     }
 
     public static func analyze(_ text: String, top: Int = 10) -> String {
-        analyze(text.characters, top: top)
+        analyze(text.asCharacters, top: top)
     }
 
     public static func characterFrequencies(_ characters: [Character])

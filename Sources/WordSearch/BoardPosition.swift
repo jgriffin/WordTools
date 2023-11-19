@@ -58,7 +58,7 @@ public struct BoardPosition: Hashable, CustomStringConvertible {
     }
 }
 
-extension Array where Element == BoardPosition.Step {
-    public static let simpleSteps = BoardPosition.simpleSteps
-    public static let allSteps = BoardPosition.simpleSteps + BoardPosition.advancedSteps
+public extension [BoardPosition.Step] {
+    static let simpleSteps = BoardPosition.simpleSteps
+    static let allSteps = BoardPosition.simpleSteps + BoardPosition.advancedSteps
 }
