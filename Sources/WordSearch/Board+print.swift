@@ -1,18 +1,17 @@
 import Foundation
 
-extension Board where Piece == Character {
-    public func pretty() -> String {
+public extension Board where Piece == Character {
+    func pretty() -> String {
         squares
             .map { row in String(row) }
             .joined(separator: "\n")
     }
 
-    public func pretty<CPos: Collection>(show positions: CPos,
-                                         showMap: (Character) -> Character = { $0 },
-                                         hideMap: (Character) -> Character = { _ in "." }) -> String
-        where CPos.Element == Pos
+    func pretty(show positions: some Collection<Pos>,
+                showMap: (Character) -> Character = { $0 },
+                hideMap: (Character) -> Character = { _ in "." }) -> String
     {
-        let positions = positions.set
+        let positions = positions.asSet
 
         return
             (0 ..< size.y).map { y in

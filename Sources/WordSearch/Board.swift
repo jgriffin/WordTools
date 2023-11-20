@@ -30,7 +30,7 @@ public struct Board<Piece: Hashable> {
         _positionsOf[piece] ?? []
     }
 
-    public func positionsOf<C: Collection>(_ pieces: C) -> [Pos] where C.Element == Piece {
+    public func positionsOf(_ pieces: some Collection<Piece>) -> [Pos] {
         pieces.uniqued().flatMap { p in _positionsOf[p, default: []] }
     }
 

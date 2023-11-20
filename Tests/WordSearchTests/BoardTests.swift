@@ -6,7 +6,7 @@ import XCTest
 final class BoardAndPositionTests: XCTestCase {
     typealias Pos = BoardPosition
 
-    let boardAbcd = Board(["ab", "cd"].map(\.characters))
+    let boardAbcd = Board(["ab", "cd"].map(\.asCharacters))
 
     func testMakeBoard() {
         let emptyBoard = Board<Character>([])
@@ -74,12 +74,12 @@ final class BoardAndPositionTests: XCTestCase {
 
         tests.forEach { test in
 
-            XCTAssertEqual(board.piecesFrom(test.start, step: .right).array,
-                           test.checkRight.array)
-            XCTAssertEqual(board.piecesFrom(test.start, step: .down).array,
-                           test.checkDown.array)
-            XCTAssertEqual(board.piecesFrom(test.start, step: .downRight).array,
-                           test.checkDiagonal.array)
+            XCTAssertEqual(board.piecesFrom(test.start, step: .right).asArray,
+                           test.checkRight.asArray)
+            XCTAssertEqual(board.piecesFrom(test.start, step: .down).asArray,
+                           test.checkDown.asArray)
+            XCTAssertEqual(board.piecesFrom(test.start, step: .downRight).asArray,
+                           test.checkDiagonal.asArray)
         }
     }
 }

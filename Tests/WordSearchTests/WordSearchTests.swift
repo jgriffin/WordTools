@@ -8,14 +8,14 @@ final class WordSearchTests: XCTestCase {
 
     let board = Board(["apples",
                        "banana",
-                       "cherry"].map(\.characters))
+                       "cherry"].map(\.asCharacters))
 
     func testFindWord() {
         let search = WordSearch(board: board)
 
         let tests: [(word: String, check: [[Pos]])] = [
             ("apple", [(0 ..< 5).map { Pos($0, 0) }]),
-            ("banana", [(0 ..< 6).map { Pos($0, 1) }].array),
+            ("banana", [(0 ..< 6).map { Pos($0, 1) }].asArray),
             ("abc", [[Pos(0, 0), Pos(0, 1), Pos(0, 2)]]),
             ("par", [[Pos(2, 0), Pos(3, 1), Pos(4, 2)]]),
             ("grape", []),
@@ -34,14 +34,16 @@ final class WordSearchTests: XCTestCase {
 
     func testBoardOnlyPositions() {
         let search = WordSearch(board: board)
-        let applePositions = search.findWord("apple").flatMap { $0 }.set
+        let applePositions = search.findWord("apple").flatMap { $0 }.asSet
 
         print(board.pretty(show: applePositions), "\n")
         print(board.pretty(show: board.positionsOf("apple")), "\n")
 
-        print(board.pretty(show: board.positionsOf("apple"),
-                           showBlock: { ch in CharacterMap.uppercasing[ch].flatMap { $0 } ?? ch },
-                           hideBlock: { ch in CharacterMap.lowercasing[ch].flatMap { $0 } ?? ch }),
-              "\n")
+        let uppercased = ElementMapper<Character>.uppercasedOrPass.mapping
+        print(board.pretty(
+            show: board.positionsOf("apple"),
+            showMap: { uppercased($0)! },
+            hideMap: { uppercased($0)! }
+        ), "\n")
     }
 }

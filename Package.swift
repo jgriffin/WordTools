@@ -1,10 +1,12 @@
-// swift-tools-version:5.3
-// The swift-tools-version declares the minimum version of Swift required to build this package.
+// swift-tools-version: 5.9
 
 import PackageDescription
 
 let package = Package(
     name: "WordTools",
+    platforms: [
+        .macOS(.v13), .iOS(.v17),
+    ],
     products: [
         .library(
             name: "WordTools",
@@ -18,16 +20,21 @@ let package = Package(
             name: "WordSearch",
             targets: ["WordSearch"]
         ),
+        .library(
+            name: "WordLists",
+            targets: ["WordLists"]
+        ),
+
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-algorithms.git", from: "0.0.2"),
+        .package(url: "https://github.com/apple/swift-algorithms.git", from: "1.0.0"),
     ],
     targets: [
         .target(
             name: "WordTools",
-            dependencies: [],
-            resources: [
-                .process("resources"),
+            dependencies: [
+                "WordLists",
+                .product(name: "Algorithms", package: "swift-algorithms"),
             ]
         ),
         .testTarget(
@@ -46,7 +53,14 @@ let package = Package(
             name: "WordSearch",
             dependencies: [
                 "WordTools",
+                "WordLists",
                 .product(name: "Algorithms", package: "swift-algorithms"),
+            ]
+        ),
+        .target(
+            name: "WordLists",
+            resources: [
+                .process("resources"),
             ]
         ),
         .testTarget(
