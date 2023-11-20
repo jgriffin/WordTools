@@ -1,7 +1,7 @@
 import Foundation
 
-public enum WordList: String {
-    case wordlist = "wordlist.txt"
+public enum WordList: String, CaseIterable {
+    case english_words_alpha = "english_words_alpha.txt"
     case unix_words = "unix_words.txt"
     case unix_propernames = "unix_propernames.txt"
     case anEnglishWordList = "AnEnglishWordList.txt"

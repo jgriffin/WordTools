@@ -82,7 +82,7 @@ public typealias Ascii = UInt8
 extension Ascii: Letter {}
 
 public extension Ascii {
-    static var asciiLetters: [Ascii] = [10] + (32 ... 126).asArray
+    static var asciiLetters: [Ascii] = (32 ... 126).asArray
     static let newline: Ascii = Character.newline.asciiValue!
     static let space: Ascii = Character.space.asciiValue!
     static let tilde: Ascii = Character.tilde.asciiValue!
@@ -97,8 +97,7 @@ public extension Ascii {
 
     var asCharacter: Character { Character(UnicodeScalar(self)) }
 
-    var isAscii: Bool { Ascii.isAscii.contains(self) }
-    static let isAscii: Set<Ascii> = .isAscii
+    var isValidAscii: Bool { (32 ... 126).contains(self) || self == 10 }
 }
 
 public extension Sequence<Ascii> {
@@ -131,16 +130,7 @@ public extension Set<Ascii> {
 
 public extension Data {
     var asAscii: [Ascii] {
-        get throws {
-            let ascii = Array(self)
-            for (i,ch) in ascii.enumerated() {
-                if !ch.isAscii {
-                    print(i, ch, try! ascii.dropFirst(i-1).prefix(50).asString)
-                    throw AsciiError.notAscii
-                }
-            }
-            return ascii
-        }
+        get throws { Array(self) }
     }
 }
 

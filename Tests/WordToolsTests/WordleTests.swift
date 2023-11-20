@@ -29,7 +29,7 @@ final class WordleTests: XCTestCase {
     }
 
     func testWorld5List() throws {
-        let words = try WordList.wordlist.asString.split(separator: .newline)
+        let words = try WordList.english_words_alpha.asString.split(separator: .newline)
         XCTAssertEqual(words.count, 69903)
 
         let word5List = words.filter { $0.count == 5 }
