@@ -29,7 +29,7 @@ final class WordListTests: XCTestCase {
 
     func testLetterCounts() throws {
         let words = try Wordlist.english_words_alpha.data.asAscii
-        let counts = LetterCounts(words)
+        let counts = ElementCounts(words)
 
         print(counts)
     }

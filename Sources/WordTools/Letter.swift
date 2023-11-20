@@ -15,6 +15,7 @@ public protocol Letter: Hashable, Comparable {
     static var newline: Self { get }
     static var space: Self { get }
     static var tilde: Self { get }
+    static var underscore: Self { get }
 
     static var uppercaseLetters: [Self] { get }
     static var lowercaseLetters: [Self] { get }
@@ -25,6 +26,10 @@ public protocol Letter: Hashable, Comparable {
     static var symbolLetters: [Self] { get }
 
     var asCharacter: Character { get }
+    var asAsciiCharacter: Character? { get }
+
+    var asDigitValue: UInt8? { get }
+    var asHexDigitValue: UInt8? { get }
 }
 
 // MARK: - sets and dictionaries
@@ -46,6 +51,10 @@ public extension Dictionary where Key: Letter, Key == Value {
 public extension Letter {
     static var toUppercaseMap: [Self: Self] { .toLowercase }
     static var toLowercaseMap: [Self: Self] { .toUppercase }
+    
+    var asAsciiCharacter: Character? {
+        Set<Self>.isAscii.contains(self) ? asCharacter : nil
+    }
 }
 
 // MARK: - Character
@@ -54,10 +63,11 @@ public extension Letter {
 extension Character: Letter {}
 
 public extension Character {
-    static var asciiLetters: [Character] = Ascii.asciiLetters.map(\.asCharacter)
+    static let asciiLetters: [Character] = Ascii.asciiLetters.map(\.asCharacter)
     static let newline: Character = "\n"
     static let space: Character = " "
     static let tilde: Character = "~"
+    static let underscore: Character = "_"
 
     static let uppercaseLetters: [Character] = asciiLetters.filter(\.isUppercase)
     static let lowercaseLetters: [Character] = asciiLetters.filter(\.isLowercase)
@@ -68,6 +78,9 @@ public extension Character {
     static let symbolLetters: [Character] = asciiLetters.filter(\.isSymbol)
 
     var asCharacter: Character { self }
+
+    var asDigitValue: UInt8? { wholeNumberValue.flatMap(UInt8.init) }
+    var asHexDigitValue: UInt8? { hexDigitValue.flatMap(UInt8.init) }
 }
 
 public extension [Character] {
@@ -82,10 +95,11 @@ public typealias Ascii = UInt8
 extension Ascii: Letter {}
 
 public extension Ascii {
-    static var asciiLetters: [Ascii] = (32 ... 126).asArray
+    static let asciiLetters: [Ascii] = (32 ... 126).asArray
     static let newline: Ascii = Character.newline.asciiValue!
     static let space: Ascii = Character.space.asciiValue!
     static let tilde: Ascii = Character.tilde.asciiValue!
+    static let underscore: Ascii = Character.underscore.asciiValue!
 
     static let uppercaseLetters: [Ascii] = try! Character.uppercaseLetters.asAscii
     static let lowercaseLetters: [Ascii] = try! Character.lowercaseLetters.asAscii
@@ -96,6 +110,22 @@ public extension Ascii {
     static let symbolLetters: [Ascii] = try! Character.symbolLetters.asAscii
 
     var asCharacter: Character { Character(UnicodeScalar(self)) }
+
+    var asDigitValue: UInt8? {
+        switch self {
+        case 48 ... 57: self - 48
+        default: nil
+        }
+    }
+
+    var asHexDigitValue: UInt8? {
+        switch self {
+        case 48 ... 57: self - 48
+        case 65 ... 72: self - 65 + 10
+        case 97 ... 102: self - 97 + 10
+        default: nil
+        }
+    }
 
     var isValidAscii: Bool { (32 ... 126).contains(self) || self == 10 }
 }
@@ -124,14 +154,8 @@ public extension Sequence<Character> {
     }
 }
 
-public extension Set<Ascii> {
-    static let isAscii: Self = Element.asciiLetters.asSet
-}
-
 public extension Data {
-    var asAscii: [Ascii] {
-        get throws { Array(self) }
-    }
+    var asAscii: [Ascii] { Array(self) }
 }
 
 enum AsciiError: Error {

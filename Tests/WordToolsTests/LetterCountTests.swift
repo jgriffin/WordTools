@@ -10,7 +10,7 @@ final class LetterCountTests: XCTestCase {
     let text = try! Wordlist.mit_wordlist_10000.asString
 
     func testCountsAndPercentages() throws {
-        let counts = LetterCounts(text)
+        let counts = ElementCounts(text)
         let percentages = counts.asPercentages
 
         XCTAssertEqual(counts.countOf.keys.count, percentages.keys.count)
@@ -26,7 +26,7 @@ final class LetterCountTests: XCTestCase {
 
     func testMap() throws {
         let text = try Wordlist.mit_wordlist_10000.asString
-        let freq = LetterCounts(text)
+        let freq = ElementCounts(text)
 
         print("\(heading: "uppercasedOrPass")")
         print("\(asPercentages: freq.map(.uppercasedOrPass), prefix: 5)")
@@ -39,7 +39,7 @@ final class LetterCountTests: XCTestCase {
     }
 
     func testAcadNonAlphanum() throws {
-        let freq = LetterCounts(text)
+        let freq = ElementCounts(text)
 
         print("\(heading: "letters")")
         print("\(counts: freq.map(.uppercasedOrDrop), prefix: 5)")
@@ -56,7 +56,7 @@ final class LetterCountTests: XCTestCase {
 
     func testMapNonAlphaNum() throws {
         let text = try Wordlist.mit_wordlist_10000.asString
-        let freq = LetterCounts(text)
+        let freq = ElementCounts(text)
 
         print("letters")
         print("\(counts: freq.map(.uppercasedOrPass), prefix: 5)")
