@@ -6,7 +6,7 @@ import Foundation
 
 public extension String.StringInterpolation {
     mutating func appendInterpolation(heading: String) {
-        appendLiteral("\n\(heading)\n")
+        appendLiteral("\(heading)\n")
         appendLiteral("\(String(repeating: "-", count: heading.count))")
     }
 }

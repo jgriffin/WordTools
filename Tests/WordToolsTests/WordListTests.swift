@@ -24,7 +24,7 @@ final class WordListTests: XCTestCase {
 
     func testWordCount_english_words_alpha() throws {
         let words = try Wordlist.english_words_alpha.asString.split(separator: .newline)
-        XCTAssertEqual(words.count, 370105)
+        XCTAssertEqual(words.count, 370_105)
     }
 
     func testLetterCounts() throws {

@@ -11,13 +11,10 @@ final class LetterCountTests: XCTestCase {
 
     func testCountsAndPercentages() throws {
         let counts = ElementCounts(text)
-        let percentages = counts.asPercentages
 
-        XCTAssertEqual(counts.countOf.keys.count, percentages.keys.count)
         XCTAssertEqual(counts.countOf["e"], 7601)
-        XCTAssertEqual(percentages["e"], 10.017132)
+        XCTAssertEqual(counts.probabilityOf("e") * 100, 10.017132)
 
-        print("\(heading: "counts")")
         print("\(counts: counts, prefix: 5)")
 
         print("\(heading: "percentages")")

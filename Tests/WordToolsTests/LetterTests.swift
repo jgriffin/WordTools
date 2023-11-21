@@ -7,10 +7,7 @@ import XCTest
 
 final class LetterTests: XCTestCase {
     func testLetters() async throws {
-        let letters = #"""
-         !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
-        """#
-        XCTAssertEqual(Character.asciiLetters.asString, letters)
+        XCTAssertEqual(Character.asciiValues.asString, "\n" + ##" !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~"##)
         XCTAssertEqual(Character.lowercaseLetters.asString, "abcdefghijklmnopqrstuvwxyz")
         XCTAssertEqual(Character.uppercaseLetters.asString, "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
         XCTAssertEqual(Character.alphaLetters.asString, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
@@ -18,5 +15,6 @@ final class LetterTests: XCTestCase {
         XCTAssertEqual(Character.alphaNumericLetters.asString, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")
         XCTAssertEqual(Character.punctuationLetters.asString, ##"!"#%&'()*,-./:;?@[\]_{}"##)
         XCTAssertEqual(Character.symbolLetters.asString, "$+<=>^`|~")
+        XCTAssertEqual(Character.textualLetters.asString, ###" ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!"#%&'()*,-./:;?@[\]_{}"###)
     }
 }

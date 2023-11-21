@@ -11,3 +11,9 @@ public extension Sequence where Element: Hashable {
 public extension Sequence {
     var asArray: [Element] { Array(self) }
 }
+
+public extension Collection where Element: FloatingPoint {
+    var meanSquaredError: Element {
+        lazy.map { $0 * $0 }.reduce(0, +) / Element(count)
+    }
+}

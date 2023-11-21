@@ -13,4 +13,6 @@ public extension LetterMap {
     static var uppercasedOrDrop: Self { .first(.map(.toUppercase), .include(.isUppercase)) }
     static var lowercasedOrPass: Self { .mapOrPass(.toLowercase) }
     static var lowercasedOrDrop: Self { .first(.map(.toLowercase), .include(.isLowercase)) }
+
+    static var newlineToSpace: Self { .replaceIn([.newline], with: .space) }
 }

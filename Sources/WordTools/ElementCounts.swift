@@ -7,8 +7,14 @@ import Foundation
 public struct ElementCounts<Element: Hashable>: CustomStringConvertible {
     public let countOf: [Element: Int]
 
+    // pre-computed
+    public let totalCount: Int
+    public let uniqueCount: Int
+
     public init(countOf: [Element: Int]) {
         self.countOf = countOf
+        totalCount = countOf.values.reduce(0,+)
+        uniqueCount = countOf.keys.count
     }
 
     public init(_ s: some Sequence<Element>) {
@@ -25,16 +31,6 @@ public struct ElementCounts<Element: Hashable>: CustomStringConvertible {
 }
 
 public extension ElementCounts {
-    // MARK: - counts
-
-    var totalCount: Int {
-        countOf.values.reduce(0,+)
-    }
-
-    var uniqueElementsCount: Int {
-        countOf.keys.count
-    }
-
     // MARK: - map
 
     func map(_ mapper: ElementMapper<Element>) -> ElementCounts {
@@ -46,33 +42,46 @@ public extension ElementCounts {
         )
     }
 
-    // MARK: - percentages
+    // MARK: - probabilities
 
-    var asProbabilies: [Element: Float] {
-        let floatCount = Float(totalCount)
-        return countOf.mapValues { Float($0) / floatCount }
+    func probabilityOf(_ element: Element) -> Float {
+        Float(countOf[element, default: 0]) / Float(totalCount)
     }
 
-    var asPercentages: [Element: Float] {
-        let floatCount = Float(totalCount)
-        return countOf.mapValues { Float($0) / floatCount * 100 }
+    func laplaceOf(_ element: Element) -> Float {
+        Float(countOf[element, default: 0] + 1) / Float(totalCount + uniqueCount)
     }
 
-    // MARK: - probability
+    // MARK: - elements
 
-    var asBayesianProbability: BayesianProbability<Element> {
-        let probs = asProbabilies
-        let uniqueElementsCount = uniqueElementsCount
-        let unseenProbability = 1 / Float(uniqueElementsCount)
+    var elements: Set<Element> {
+        countOf.keys.asSet
+    }
 
-        return .init(
-            probBGivenA: { b in
-                probs[b, default: unseenProbability]
-            },
-            probB: { b in 
-                probs[b] != nil ? unseenProbability : unseenProbability
-            }
-        )
+    func elementsSortedByCount(ascending: Bool = false) -> [Element] {
+        countOf
+            .sorted(by: ascending ? Self.isAscending : Self.isDescending)
+            .map(\.key)
+    }
+
+    typealias KeyAndCount = (key: Element, value: Int)
+
+    private static func isAscending(_ lhs: KeyAndCount, _ rhs: KeyAndCount) -> Bool {
+        lhs.value < rhs.value
+    }
+
+    private static func isDescending(_ lhs: KeyAndCount, _ rhs: KeyAndCount) -> Bool {
+        lhs.value > rhs.value
+    }
+
+    // MARK: - map to
+
+    typealias ElementAndFloat = (element: Element, value: Float)
+
+    func map(elements: [Element], with: (Element) -> Float) -> [ElementAndFloat] {
+        elements.map { element in
+            ElementAndFloat(element, with(element))
+        }
     }
 }
 
